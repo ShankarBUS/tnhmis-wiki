@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Home",
+        "path": "docs/home.md",
+        "default": true,
+        "route": "home"
+    },
+    {
+        "title": "Getting Started",
+        "path": "docs/getting-started.md",
+        "route": "getting-started",
+        "description": "Get started with TN HMIS"
+    },
+    {
+        "title": "OPD",
+        "path": "docs/home.md",
+        "route": "opd",
+        "description": "OPD Module"
+    },
+    {
+        "title": "Vitals Module",
+        "path": "docs/home.md",
+        "route": "opd.vitals",
+        "parent": "opd"
+    },
+    {
+        "title": "V2",
+        "path": "docs/home.md",
+        "route": "opd.vitals.v2",
+        "parent": "opd.vitals"
+    },
+    {
+        "title": "V3",
+        "path": "docs/home.md",
+        "route": "opd.vitals.v2.v3",
+        "parent": "opd.vitals.v2"
+    }
+]
