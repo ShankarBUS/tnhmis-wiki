@@ -115,4 +115,66 @@ export async function initNavigation() {
 
     var { route, headingId } = getNavInfoFromHash();
     navigateTo(route, headingId, true);
+
+    document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (!target) return;
+        if (target.closest("#navMenuBtn")) return toggleNav();
+        if (!isWide()) {
+            if (target.closest("#navCloseBtn")) return closeNav();
+            if (
+                document.documentElement.classList.contains("nav-open") &&
+                !target.closest("#navBar")
+            )
+                closeNav();
+        }
+    });
+
+    window.addEventListener("keydown", (e) => {
+        if (
+            !isWide() &&
+            e.key === "Escape" &&
+            document.documentElement.classList.contains("nav-open")
+        )
+            closeNav();
+    });
+
+    window.addEventListener("resize", () => {
+        if (isWide()) document.documentElement.classList.remove("nav-open");
+        updateNav();
+    });
+}
+
+const NAV_WIDE_BREAKPOINT = 1000; // px
+
+function isWide() {
+    return window.innerWidth >= NAV_WIDE_BREAKPOINT;
+}
+
+function updateNav() {
+    const nav = document.getElementById("navBar");
+    if (!nav) return;
+    if (isWide()) nav.setAttribute("aria-hidden", "false");
+    else
+        nav.setAttribute(
+            "aria-hidden",
+            document.documentElement.classList.contains("nav-open") ? "false" : "true"
+        );
+}
+
+function openNav() {
+    if (!isWide()) document.documentElement.classList.add("nav-open");
+    updateNav();
+}
+
+function closeNav() {
+    if (!isWide()) document.documentElement.classList.remove("nav-open");
+    updateNav();
+}
+
+function toggleNav() {
+    if (isWide()) return;
+    document.documentElement.classList.contains("nav-open")
+        ? closeNav()
+        : openNav();
 }

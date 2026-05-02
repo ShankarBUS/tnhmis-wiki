@@ -4,23 +4,21 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-
-    .profile-img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-    }
 }
 
 .app-shell {
     display: grid;
-    grid-template-columns: minmax(260px, 280px) 1fr;
+    grid-template-columns: minmax(var(--sidebar-width), var(--sidebar-width)) 1fr;
     gap: var(--space-5);
     padding: var(--space-5);
 
     main {
         padding: 0 !important;
     }
+}
+
+html.nav-open .navbar {
+    transform: translateX(0);
 }
 
 .navbar {
@@ -32,39 +30,43 @@
     justify-content: flex-start;
     overflow: hidden;
     padding: var(--space-4);
+    transition: transform var(--t-med) ease;
 }
 
 .nav-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    .modal-close {
-        display: none;
-    }
 }
 
-@media (max-width: 980px) {
+#navMenuBtn,
+#navCloseBtn {
+    display: none;
+}
+
+@media (max-width: 1000px) {
     .app-shell {
         grid-template-columns: 1fr;
     }
 
     .navbar {
-        display: none;
         position: fixed;
         top: 0;
         left: 0;
         z-index: var(--z-nav);
-        height: 100%;
-        max-width: 80vw;
+        transform: translateX(-100%);
+        height: 100vh;
+        min-width: var(--sidebar-width);
+        max-width: var(--sidebar-width);
         border: none;
         border-right: 1px solid var(--c-border);
         border-radius: 0 var(--radius-md) var(--radius-md) 0;
         overflow-y: auto;
+    }
 
-        .modal-close {
-            display: block;
-        }
+    #navMenuBtn,
+    #navCloseBtn {
+        display: block;
     }
 }
 
@@ -72,8 +74,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
-    max-height: calc(100vh - 24rem);
-    overflow-y: auto;
+    max-height: 100vh;
+    overflow: auto;
 }
 
 .navitem {
@@ -223,8 +225,12 @@
     background: var(--c-surface);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    h1, h2, h3,
-    h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         margin-top: 0;
     }
 
