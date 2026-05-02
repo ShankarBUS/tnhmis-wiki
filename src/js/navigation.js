@@ -37,7 +37,7 @@ function setActiveNavItem(route) {
     });
 }
 
-async function renderDocsMap() {
+export async function renderDocsMap() {
     if (await loadDocsMap()) {
         _pageListEl.innerHTML = "";
         docsMap.forEach(map => {

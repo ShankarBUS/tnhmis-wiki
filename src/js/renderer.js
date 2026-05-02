@@ -94,8 +94,8 @@ function renderTOC(headings, map) {
     headings.forEach(heading => {
         const link = document.createElement("a");
         link.href = getHashForRoute(map.route, heading.id);
-        link.className = `navitem level-${heading.level}`;
-        link.textContent = heading.text;
+        link.className = `toc-item level-${heading.level}`;
+        link.textContent = heading.number + '. ' + heading.text;
         tocList.appendChild(link);
     });
 
@@ -153,6 +153,7 @@ function processMarkdown(md, map) {
     // Extract headings
     const headings = [];
     const headingIdCounts = {};
+    const levelIndices = [0, 0, 0, 0, 0, 0]; // To track numbering for each heading level
 
     function uniqueHeadingId(text) {
         const base = slugify(text);
@@ -165,17 +166,32 @@ function processMarkdown(md, map) {
     for (let line of lines) {
         if (/^#{1,6}\s+/.test(line)) {
             const level = line.match(/^#{1,6}/)[0].length;
+            const i = level - 1;
+            levelIndices[i]++;
+
+            // Reset the lower level indices
+            for (let j = i + 1; j < levelIndices.length; j++) {
+                levelIndices[j] = 0;
+            }
+
+            const number = levelIndices.slice(0, level).join('.');
+
             const text = line.slice(level + 1).trim();
             const id = uniqueHeadingId(text);
-            headings.push({ level, text, id });
+            headings.push({ level, text, id, number });
         }
     }
 
+    levelIndices.fill(0); // Reset for rendering
     const headingRenderer = {
         heading({ tokens, depth }) {
+            const i = depth - 1;
+            levelIndices[i]++;
+            for (let j = i + 1; j < levelIndices.length; j++) levelIndices[j] = 0;
+            const number = levelIndices.slice(0, depth).join('.');
             const text = this.parser.parseInline(tokens);
             const id = slugify(text);
-            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(map.route, id)}">${text}</a></h${depth}>`;
+            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(map.route, id)}">${number + '. ' + text}</a></h${depth}>`;
         }
     };
 

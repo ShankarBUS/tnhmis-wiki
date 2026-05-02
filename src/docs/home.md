@@ -1,17 +1,15 @@
-# TN HMIS Wiki
+Welcome to the unofficial TN HMIS Wiki!
 
-Welcome to the TN HMIS Wiki engine. This static wiki is built with pure HTML, vanilla JavaScript, and Kaadu UI styling.
+> An unofficial guide designed for Doctors and Interns to gain basic usage knowledge of TN HMIS.
 
-Use the sidebar to browse pages, search for content, and open documentation without any external JavaScript framework or build tool.
+# About TN HMIS
 
-## What this wiki supports
+Tamil Nadu Health Management Information System (TNHMIS) is a web-based health management information system built by [Centre for Development of Advanced Computing (C-DAC)](https://www.cdac.in/) under [National Health Mission (NHM)](https://nhm.gov.in/) for hospital management including Registration, OPD, IPD, Laboratory, Pharmacy, etc.
 
-- Markdown pages stored in `src/docs`
-- Client-side page navigation using URL hashes
-- Full-text search across page content
-- Responsive Kaadu UI layout
-- Native dark/light theme toggle
+The services are hosted in 3 web domains for services provided by 3 directorates under the main domain `tn.gov.in`.
 
-## Getting started
+- https://tnhmis.tn.gov.in/ provide services for Directorate of Public Health and Preventive Medicine (DPH). Used in PHCs.
+- https://tnhmis.dms.tn.gov.in/ provide services for Directorate of Medical and Rural Services (DMS). Used in Government Hospitals.
+- https://tnhmis.dmer.tn.gov.in/ provide services for Directorate of Medical Education and Research (DMER). Used in Medical Colleges.
 
-Click **Getting Started** in the sidebar to open the main guide, or use the search box to locate key topics by keywords.
+[Get started](#/getting-started) with this Wiki
