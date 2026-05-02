@@ -95,6 +95,8 @@ export function navigateTo(route, headingId = null, replaceHistory = false) {
     _hashChanging = true;
     updateHash(route, headingId, replaceHistory);
     _hashChanging = false;
+    if (map)
+        document.title = "TN HMIS Wiki - " + map.title;
     if (replaceHistory) {
         renderPage(map, headingId);
     }

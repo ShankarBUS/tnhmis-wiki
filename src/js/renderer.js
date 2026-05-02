@@ -191,7 +191,7 @@ function processMarkdown(md, map) {
             const number = levelIndices.slice(0, depth).join('.');
             const text = this.parser.parseInline(tokens);
             const id = slugify(text);
-            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(map.route, id)}">${number + '. ' + text}</a></h${depth}>`;
+            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(map.route, id)}"></a>${number + '. ' + text}</h${depth}>`;
         }
     };
 

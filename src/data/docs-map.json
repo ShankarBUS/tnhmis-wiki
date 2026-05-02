@@ -11,10 +11,23 @@
         "route": "getting-started",
         "description": "Get started with TN HMIS"
     },
-        {
+    {
         "title": "OPD Module",
         "path": "docs/opd.md",
         "route": "opd",
         "description": "Overview of OPD module"
+    },
+    {
+        "title": "Rx Prescription",
+        "path": "docs/opd.rx.md",
+        "route": "opd.rx",
+        "parent": "opd",
+        "description": "Breakdown of Prescription page"
+    },
+    {
+        "title": "IPD Module",
+        "path": "docs/ipd.md",
+        "route": "ipd",
+        "description": "Overview of IPD module"
     }
 ]

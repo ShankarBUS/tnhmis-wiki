@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TN HMIS Wiki</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/ShankarBUS">
+    <link rel="icon" type="image/x-icon" href="assets/images/hmis-icon.png">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
@@ -34,7 +34,11 @@
                     <use href="#ic-menu"></use>
                 </svg>
             </button>
-            <h1>TN HMIS Wiki</h1>
+            <img width="32px" height="32px" src="assets/images/hmis-icon.png" />
+            <div>
+                <h3 id="pageTitle">Loading wiki…</h3>
+                <div id="pageDescription" class="sub-title"></div>
+            </div>
         </div>
         <div class="button-group">
             <button id="homeButton" class="icon-button" title="Home">
@@ -65,11 +69,9 @@
         </aside>
 
         <main>
-            <section class="page-info group">
+            <section class="dataContainer">
                 <div id="breadCrumbBar" class="breadcrumb"></div>
-                <h1 id="pageTitle">Loading wiki…</h1>
-                <div id="pageDescription"></div>
-                <div id="pageToc" class="wiki-toc group" aria-label="Table of contents"></div>
+                <nav id="pageToc" class="wiki-toc group" aria-label="Table of contents"></nav>
             </section>
 
             <article id="content" class="wiki-content group">

@@ -6,6 +6,11 @@
     gap: var(--space-3);
 }
 
+.sub-title {
+    font-size: var(--fs-1);
+    color: var(--c-text-soft);
+}
+
 .app-shell {
     display: grid;
     grid-template-columns: minmax(var(--sidebar-width), var(--sidebar-width)) 1fr;
@@ -58,6 +63,8 @@ html.nav-open .navbar {
         height: 100vh;
         min-width: var(--sidebar-width);
         max-width: var(--sidebar-width);
+        background: var(--header-bg);
+        backdrop-filter: var(--header-blur);
         border: none;
         border-right: 1px solid var(--c-border);
         border-radius: 0 var(--radius-md) var(--radius-md) 0;
@@ -67,6 +74,18 @@ html.nav-open .navbar {
     #navMenuBtn,
     #navCloseBtn {
         display: block;
+    }
+}
+
+@media (max-width:480px) {
+    .app-shell {
+        padding: var(--space-3);
+    }
+
+    header.sticky {
+        top: var(--space-3);
+        left: var(--space-3);
+        right: var(--space-3);
     }
 }
 
@@ -134,7 +153,7 @@ html.nav-open .navbar {
     .breadcrumb-item {
         font-size: var(--fs-3);
         color: var(--c-text-soft);
-        background: var(--c-surface-alt);
+        background: var(--c-surface);
         padding: var(--space-1) var(--space-3);
 
         &.clickable {
@@ -167,7 +186,7 @@ html.nav-open .navbar {
     padding: var(--space-4);
     border: 1px solid var(--c-border);
     border-radius: var(--radius-lg);
-    background: var(--c-surface-alt);
+    background: var(--c-surface);
 
     .toc-list {
         display: flex;
@@ -225,13 +244,33 @@ html.nav-open .navbar {
     background: var(--c-surface);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    h1, h2, h3,
+    h4, h5, h6 {
         margin-top: 0;
+        position: relative;
+        overflow: unset;
+
+        a {
+            font-size: 12px;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            padding: 0px;
+            top: 50%;
+            left: calc(100% + 4px);
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity var(--t-med) ease;
+
+            &::before {
+                content: "🔗";
+            }
+        }
+
+        &:hover a {
+            background-color: transparent;
+            opacity: 1;
+        }
     }
 
     p {
@@ -283,5 +322,16 @@ html.nav-open .navbar {
     td {
         border: 1px solid var(--c-border);
         padding: var(--space-3);
+    }
+}
+
+@media (pointer: coarse) {
+    .wiki-content {
+        h1, h2, h3,
+        h4, h5, h6 {
+            a {
+                opacity: 1 !important;
+            }
+        }
     }
 }

@@ -9,9 +9,10 @@ Among the 3 listed services:
 - **OPD Doctor Desk**: the deprecated & sluggish old UI.
 
 # New OPD
-The new OPD desk is the faster and cleaner version with comparatively good UI.
 
 ![New OPD Desk](/src/assets/images/opd-new.png)
+
+The new OPD desk is the **faster and cleaner version with comparatively good UI**.
 
 The patients once registered will be listed under **"Patients Waiting"** under a certain department and OP Room. Once prescribed the patients will be marked attended and moved under **"Patients Attended"**.
 
@@ -29,6 +30,27 @@ Under Actions there are three buttons:
 
 ## Rx Prescription
 
-![Rx Prescription page](/src/assets/images/rx.png)
+![Rx Prescription page](/src/assets/images/opd-new-rx.png)
 
-The Rx page displays the patient details at the top such as Name, Age/Sex, Phone Number, their PIN number
+
+### Features
+- Patient details such as Name, Age/Sex, Phone Number, their PIN number are displayed.
+- Vitals Entry.
+- Bookmarks: saving and loading preset prescription for a specific disease or complaint.
+- Repeating past prescription.
+- Cheif complaints can entered with auto complete support.
+- Diagnosis also has auto complete support with predefined diagnoses loaded from ICD-10 and SNOMED-CT database.
+- Laboratory and Radiological Investigations can be requested directly from this page.
+
+For a detailed breakdown, visit [Rx Prescription](#/opd.rx) page.
+
+# Old OPD
+
+![Old OPD Doctor Desk](/src/assets/images/opd-old-list.png)
+
+This page is deprecated, slow and takes about **20 seconds** on average to load the Rx page and users are advised to switch to the new OPD desk.
+
+> NOTE:
+>
+> The only use-case for Old OPD is for visit stamping or prescribing patients who are already in admission as the New OPD does not allow prescribing in-patients.  
+> But New OPD can be used once the patient has been discharged.

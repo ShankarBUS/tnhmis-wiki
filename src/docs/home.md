@@ -4,6 +4,8 @@ Welcome to the unofficial TN HMIS Wiki!
 
 # About TN HMIS
 
+![HMIS Logo](/src/assets/images/hmis-icon.png)
+
 Tamil Nadu Health Management Information System (TNHMIS) is a web-based health management information system built by [Centre for Development of Advanced Computing (C-DAC)](https://www.cdac.in/) under [National Health Mission (NHM)](https://nhm.gov.in/) for hospital management including Registration, OPD, IPD, Laboratory, Pharmacy, etc.
 
 The services are hosted in 3 web domains for services provided by 3 directorates under the main domain `tn.gov.in`.
