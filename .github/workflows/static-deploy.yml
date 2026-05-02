@@ -35,8 +35,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Process Markdown Images
         run: |
-          # Replace '/src/assets/' with '/assets/' in all Markdown files in the src/docs/ directory.
-          sed -i 's/\/src\/assets\//\/assets\//g' src/docs/*.md
+          # Replace '/src/assets/' with 'assets/' in all Markdown files in the src/docs/ directory.
+          sed -i 's|/src/assets/|assets/|g' src/docs/*.md
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
