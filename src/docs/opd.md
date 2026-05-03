@@ -48,9 +48,8 @@ For a detailed breakdown, visit [Rx Prescription](#/opd.rx) page.
 
 ![Old OPD Doctor Desk](/src/assets/images/opd-old-list.png)
 
-This page is deprecated, slow and takes about **20 seconds** on average to load the Rx page and users are advised to switch to the new OPD desk.
-
-> NOTE:
->
-> The only use-case for Old OPD is for visit stamping or prescribing patients who are already in admission as the New OPD does not allow prescribing in-patients.  
-> But New OPD can be used once the patient has been discharged.
+> [!WARNING]
+> Old OPD is **deprecated** and **slow**. It takes about **20 seconds** on average to load the Rx page.
+> The only use-case for Old OPD is for visit stamping or prescribing patients who are **already in admission** as the New OPD does not allow prescribing in-patients.
+> But New OPD can be used once the patient has been discharged.  
+> Users are advised to switch to the new OPD desk.

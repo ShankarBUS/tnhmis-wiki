@@ -23,7 +23,7 @@ async function loadPageContent(map) {
         return text;
     } catch (error) {
         console.error(error);
-        return `# Error: Unable to load ${map.route}.`;
+        return error.message;
     }
 }
 
@@ -108,8 +108,11 @@ export async function renderPage(map, headingId = null) {
         _contentEl.innerHTML = "<p>Page not found.</p>";
         _titleEl.textContent = "Not Found";
         _breadCrumbBar.innerHTML = "";
+        _breadCrumbBar.style.display = "none";
         _descEl.textContent = "";
+        _descEl.style.display = "none";
         _tocEl.innerHTML = "";
+        _tocEl.style.display = "none";
         return;
     }
 
@@ -196,8 +199,50 @@ function processMarkdown(md, map) {
     };
 
     marked.use({ renderer: headingRenderer });
+    enableGFMAlerts();
 
     const html = marked.parse(md);
 
     return { html, headings };
+}
+
+function enableGFMAlerts() {
+    const extension = {
+        extensions: [{
+            name: 'gfmAlert',
+            level: 'block',
+            start(src) { return src.indexOf('> [!'); },
+            tokenizer(src, tokens) {
+                // Updated regex to handle single or multiple lines accurately
+                const rule = /^> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>.*\n?)*)/;
+                const match = rule.exec(src);
+
+                if (match) {
+                    const alertType = match[1].toLowerCase();
+                    // Clean the '>' from each line of content
+                    const content = match[2].replace(/^>\s?/gm, '');
+
+                    const token = {
+                        type: 'gfmAlert',
+                        raw: match[0],
+                        alertType,
+                        text: content,
+                        tokens: []
+                    };
+
+                    this.lexer.blockTokens(token.text, token.tokens);
+                    return token;
+                }
+            },
+            renderer(token) {
+                const quote = this.parser.parse(token.tokens);
+                return `<blockquote class="alert-${token.alertType}">
+                            <p class="alert-title">${token.alertType.toUpperCase()}</p>
+                            ${quote}
+                        </blockquote>`;
+            }
+        }]
+    };
+
+    marked.use(extension);
 }

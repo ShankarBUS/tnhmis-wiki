@@ -1,5 +1,27 @@
 @import url('https://shankarbus.github.io/kaadu-ui/kaadu-ui.css');
 
+:root {
+    --c-important: #004173;
+    --c-note: #3b2e58;
+    --c-important-bg: rgba(from var(--c-important) r g b / 0.2);
+    --c-note-bg: rgba(from var(--c-note) r g b / 0.2);
+    --c-success-bg: rgba(from var(--c-success) r g b / 0.2);
+    --c-danger-bg: rgba(from var(--c-danger) r g b / 0.2);
+    --c-warn-bg: rgba(from var(--c-warn) r g b / 0.2);
+}
+
+.theme-dark {
+    --c-important: #9ccbee;
+    --c-note: #efd9fd;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+        --c-important: #9ccbee;
+        --c-note: #efd9fd;
+    }
+}
+
 .app-brand {
     display: flex;
     align-items: center;
@@ -244,11 +266,16 @@ html.nav-open .navbar {
     background: var(--c-surface);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    h1, h2, h3,
-    h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         margin-top: 0;
         position: relative;
         overflow: unset;
+        color: var(--c-accent);
 
         a {
             font-size: 12px;
@@ -306,11 +333,61 @@ html.nav-open .navbar {
     }
 
     blockquote {
-        margin: var(--space-3);
+        margin: 0px;
+        margin-bottom: var(--space-3);
         padding: var(--space-3);
         border-left: 4px solid var(--c-border-strong);
         background: var(--c-surface-alt);
         border-radius: var(--radius-md);
+
+        .alert-title {
+            font-weight: 600;
+        }
+
+        &.alert-important {
+            background-color: var(--c-important-bg);
+            border-color: var(--c-important);
+
+            .alert-title {
+                color: var(--c-important);
+            }
+        }
+
+        &.alert-note {
+            background-color: var(--c-note-bg);
+            border-color: var(--c-note);
+
+            .alert-title {
+                color: var(--c-note);
+            }
+        }
+
+        &.alert-tip {
+            background-color: var(--c-success-bg);
+            border-color: var(--c-success);
+
+            .alert-title {
+                color: var(--c-success);
+            }
+        }
+
+        &.alert-warning {
+            background-color: var(--c-warn-bg);
+            border-color: var(--c-warn);
+
+            .alert-title {
+                color: var(--c-warn);
+            }
+        }
+
+        &.alert-caution {
+            background-color: var(--c-danger-bg);
+            border-color: var(--c-danger);
+
+            .alert-title {
+                color: var(--c-danger);
+            }
+        }
     }
 
     table {
@@ -327,8 +404,13 @@ html.nav-open .navbar {
 
 @media (pointer: coarse) {
     .wiki-content {
-        h1, h2, h3,
-        h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             a {
                 opacity: 1 !important;
             }

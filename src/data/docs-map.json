@@ -25,6 +25,21 @@
         "description": "Breakdown of Prescription page"
     },
     {
+        "title": "Vitals",
+        "route": "opd.rx?h=vitals",
+        "parent": "opd.rx"
+    },
+    {
+        "title": "Bookmarks",
+        "route": "opd.rx?h=bookmarks",
+        "parent": "opd.rx"
+    },
+    {
+        "title": "Drug Entry",
+        "route": "opd.rx?h=drug-entry",
+        "parent": "opd.rx"
+    },
+    {
         "title": "IPD Module",
         "path": "docs/ipd.md",
         "route": "ipd",
