@@ -43,6 +43,14 @@
         "title": "IPD Module",
         "path": "docs/ipd.md",
         "route": "ipd",
-        "description": "Overview of IPD module"
+        "description": "Overview of IPD module",
+        "children": [
+            {
+                "title": "Single Page Discharge",
+                "path": "docs/ipd.sp-discharge.md",
+                "route": "ipd.sp-discharge",
+                "description": "Breakdown of Single Page Discharge page"
+            }
+        ]
     }
 ]

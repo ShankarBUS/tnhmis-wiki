@@ -1,6 +1,7 @@
+# Overview
+
 OPD Module deals with out-patient precription and electronic medical records.
 
-# Overview
 ![OPD Module](/src/assets/images/opd-module.png)
 
 Among the 3 listed services:
