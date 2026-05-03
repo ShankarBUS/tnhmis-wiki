@@ -15,29 +15,29 @@
         "title": "OPD Module",
         "path": "docs/opd.md",
         "route": "opd",
-        "description": "Overview of OPD module"
-    },
-    {
-        "title": "Rx Prescription",
-        "path": "docs/opd.rx.md",
-        "route": "opd.rx",
-        "parent": "opd",
-        "description": "Breakdown of Prescription page"
-    },
-    {
-        "title": "Vitals",
-        "route": "opd.rx?h=vitals",
-        "parent": "opd.rx"
-    },
-    {
-        "title": "Bookmarks",
-        "route": "opd.rx?h=bookmarks",
-        "parent": "opd.rx"
-    },
-    {
-        "title": "Drug Entry",
-        "route": "opd.rx?h=drug-entry",
-        "parent": "opd.rx"
+        "description": "Overview of OPD module",
+        "children": [
+            {
+                "title": "Rx Prescription",
+                "path": "docs/opd.rx.md",
+                "route": "opd.rx",
+                "description": "Breakdown of Prescription page",
+                "children": [
+                    {
+                        "title": "Vitals",
+                        "route": "opd.rx?h=vitals"
+                    },
+                    {
+                        "title": "Bookmarks",
+                        "route": "opd.rx?h=bookmarks"
+                    },
+                    {
+                        "title": "Drug Entry",
+                        "route": "opd.rx?h=drug-entry"
+                    }
+                ]
+            }
+        ]
     },
     {
         "title": "IPD Module",

@@ -1,4 +1,4 @@
-import { getHashForRoute, getMapEntryByRoute, getCurrentRoute, navigateTo } from "./navigation.js";
+import { getHashForRoute, getPageByRoute, getCurrentRoute, navigateTo, getDocsMap } from "./navigation.js";
 
 let _renderedRoute = '';
 const pageTextCache = new Map();
@@ -8,18 +8,18 @@ const _titleEl = document.getElementById("pageTitle");
 const _descEl = document.getElementById("pageDescription");
 const _tocEl = document.getElementById("pageToc");
 
-async function loadPageContent(map) {
-    if (pageTextCache.has(map.route)) {
-        return pageTextCache.get(map.route);
+async function loadPageContent(page) {
+    if (pageTextCache.has(page.route)) {
+        return pageTextCache.get(page.route);
     }
 
     try {
-        const response = await fetch(map.path);
+        const response = await fetch(page.path);
         if (!response.ok) {
-            throw new Error(`Failed to load content for ${map.title}`);
+            throw new Error(`Failed to load content for ${page.title}`);
         }
         const text = await response.text();
-        pageTextCache.set(map.route, text);
+        pageTextCache.set(page.route, text);
         return text;
     } catch (error) {
         console.error(error);
@@ -27,18 +27,58 @@ async function loadPageContent(map) {
     }
 }
 
-export function renderNavItem(map) {
-    var _title = map.title;
-    var _description = map.description;
-    var _route = map.route || "";
-    var _parent = map.parent;
+export async function renderDocsMap(container) {
+    const docsMap = await getDocsMap();
+    renderTreeNodes(container, docsMap);
+}
+
+function renderTreeNodes(container, pages, parent = null) {
+    container.innerHTML = "";
+    pages.forEach(page => {
+        var item = renderNavItem(page, parent);
+        container.appendChild(item);
+    });
+}
+
+function renderNavItem(page, parent = null) {
+    var _title = page.title;
+    var _route = page.route || "";
+    var hasChildren = page.children && page.children.length > 0;
+
+    if (parent) {
+        page.parent = parent;
+        page.level = (parent.level) ? parent.level + 1 : 1;
+    }
 
     var item = document.createElement("div");
     item.classList.add("navitem");
-    if (_parent) item.classList.add(`level-${_parent.split('.').length}`);
     item.dataset.route = _route;
-    item.textContent = _title;
-    item.addEventListener("click", () => navigateTo(_route));
+
+    const header = document.createElement("div");
+    header.classList.add("navitem-header");
+    if (page.level) header.classList.add(`level-${page.level}`);
+    if (hasChildren) {
+        header.classList.add("expandable");
+        const expander = document.createElement("div");
+        expander.classList.add("navitem-expander");
+        expander.addEventListener("click", () => {
+            item.classList.toggle("expanded");
+        });
+        header.appendChild(expander);
+    }
+
+    const link = document.createElement("a");
+    link.href = '#/' + _route;
+    link.textContent = _title;
+    header.appendChild(link);
+
+    item.appendChild(header);
+    if (hasChildren) {
+        const container = document.createElement("div");
+        container.classList.add("navitem-container");
+        renderTreeNodes(container, page.children, page)
+        item.appendChild(container);
+    }
 
     if (item.dataset.route === getCurrentRoute()) {
         item.classList.add("active");
@@ -47,19 +87,19 @@ export function renderNavItem(map) {
     return item;
 }
 
-function renderBreadcrumbs(map) {
-    if (!map || !map.route || !map.parent) {
+function renderBreadcrumbs(page) {
+    if (!page || !page.route || !page.parent) {
         _breadCrumbBar.style.display = "none";
         return;
     }
 
-    let routes = map.route.split('.');
+    let routes = page.route.split('.');
 
     let crumbs = [];
 
     for (let i = 0; i < routes.length; i++) {
         let route = routes.slice(0, i + 1).join('.');
-        let _m = getMapEntryByRoute(route);
+        let _m = getPageByRoute(route);
         if (_m) {
             crumbs.push({ title: _m.title, route: _m.route });
         }
@@ -81,7 +121,7 @@ function renderBreadcrumbs(map) {
     _breadCrumbBar.style.display = "flex";
 }
 
-function renderTOC(headings, map) {
+function renderTOC(headings, page) {
     if (!headings.length) {
         _tocEl.style.display = "none";
         return;
@@ -93,7 +133,7 @@ function renderTOC(headings, map) {
 
     headings.forEach(heading => {
         const link = document.createElement("a");
-        link.href = getHashForRoute(map.route, heading.id);
+        link.href = getHashForRoute(page.route, heading.id);
         link.className = `toc-item level-${heading.level}`;
         link.textContent = heading.number + '. ' + heading.text;
         tocList.appendChild(link);
@@ -103,8 +143,8 @@ function renderTOC(headings, map) {
     _tocEl.style.display = "flex";
 }
 
-export async function renderPage(map, headingId = null) {
-    if (!map) {
+export async function renderPage(page, headingId = null) {
+    if (!page) {
         _contentEl.innerHTML = "<p>Page not found.</p>";
         _titleEl.textContent = "Not Found";
         _breadCrumbBar.innerHTML = "";
@@ -117,21 +157,21 @@ export async function renderPage(map, headingId = null) {
     }
 
     // Only re-render if we're navigating to a different page
-    if (map.route !== _renderedRoute) {
-        _renderedRoute = map.route;
-        renderBreadcrumbs(map);
+    if (page.route !== _renderedRoute) {
+        _renderedRoute = page.route;
+        renderBreadcrumbs(page);
 
-        const md = await loadPageContent(map);
+        const md = await loadPageContent(page);
 
-        const { html, headings } = processMarkdown(md, map);
+        const { html, headings } = processMarkdown(md, page);
 
         _contentEl.innerHTML = html;
-        _titleEl.textContent = map.title;
-        renderTOC(headings, map);
+        _titleEl.textContent = page.title;
+        renderTOC(headings, page);
 
-        if (map.description) {
+        if (page.description) {
             _descEl.style.display = "block";
-            _descEl.textContent = map.description;
+            _descEl.textContent = page.description;
         } else { _descEl.style.display = "none"; }
     }
 
@@ -152,7 +192,7 @@ function slugify(text) {
         .replace(/-+$/, '');            // Trim - from end of text
 }
 
-function processMarkdown(md, map) {
+function processMarkdown(md, page) {
     // Extract headings
     const headings = [];
     const headingIdCounts = {};
@@ -194,7 +234,7 @@ function processMarkdown(md, map) {
             const number = levelIndices.slice(0, depth).join('.');
             const text = this.parser.parseInline(tokens);
             const id = slugify(text);
-            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(map.route, id)}"></a>${number + '. ' + text}</h${depth}>`;
+            return `<h${depth} id="${id}"><a class="heading-link" href="${getHashForRoute(page.route, id)}"></a>${number + '. ' + text}</h${depth}>`;
         }
     };
 

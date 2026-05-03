@@ -1,29 +1,45 @@
-import { renderNavItem, renderPage } from './renderer.js';
+import { renderDocsMap, renderPage } from './renderer.js';
 
-// NOTE: navigation works through URL hash (e.g., #/{page-route})
-// page-route is defined in the docs map as the `route` property (map.json).
+// NOTE: navigation works through URL hash (e.g., #/{route})
+// Route is defined in the docs map as the `route` property (map.json).
 // It can also contain nested routes separated by dots (e.g., "parent.child").
-// `parent` property in the map defines the route of the parent.
-// Headings within a markdown file can be navigated as `#/{page-route}?h={heading-id}`.
+// Pages can be nested using the `children[]` property.
+// Headings within a markdown file can be navigated as `#/{route}?h={headingId}`.
 
-let docsMap = [];
+let docsMap = []; // A hierarchical map of all the docs and their nested children.
+let routeMap = null; // A flattened dictionary of {route, map}.
+let defaultPage = null; // home.
 let _mapLoaded = false;
 let currentRoute = '';
 let _hashChanging = false;
 
 const _pageListEl = document.getElementById("pageList");
 
-async function loadDocsMap() {
-    if (_mapLoaded) return true;
+export async function getDocsMap() {
+    if (_mapLoaded) return docsMap;
 
     try {
         docsMap = await fetch('data/docs-map.json').then(res => res.json());
         _mapLoaded = true;
-        return true;
+        routeMap = flattenMap(docsMap);
+        return docsMap;
     } catch (error) {
         console.error('Error loading docs map:', error);
     }
-    return false;
+    return [];
+}
+
+function flattenMap(pages, routes = {}) {
+    if (!pages) return routes;
+
+    pages.forEach(page => {
+        if (!defaultPage && page.default === true) defaultPage = page;
+        routes[page.route] = page;
+        if (page.children && page.children.length > 0)
+            flattenMap(page.children, routes)
+    });
+
+    return routes;
 }
 
 function setActiveNavItem(route) {
@@ -35,16 +51,6 @@ function setActiveNavItem(route) {
             item.classList.remove("active");
         }
     });
-}
-
-export async function renderDocsMap() {
-    if (await loadDocsMap()) {
-        _pageListEl.innerHTML = "";
-        docsMap.forEach(map => {
-            var item = renderNavItem(map);
-            _pageListEl.appendChild(item);
-        });
-    }
 }
 
 function getNavInfoFromHash() {
@@ -74,15 +80,8 @@ function updateHash(route, headingId = null, replace = false) {
     }
 }
 
-export function getMapEntryByRoute(route) {
-    let map = null;
-    if (!route || route === "") {
-        map = docsMap.find(entry => entry.default === true);
-    }
-    else {
-        map = docsMap.find(entry => entry.route === route);
-    }
-    return map;
+export function getPageByRoute(route) {
+    return (!route || route === "") ? defaultPage : routeMap[route];
 }
 
 export function getCurrentRoute() {
@@ -91,14 +90,14 @@ export function getCurrentRoute() {
 
 export function navigateTo(route, headingId = null, replaceHistory = false) {
     currentRoute = route;
-    const map = getMapEntryByRoute(route);
+    const page = getPageByRoute(route);
     _hashChanging = true;
     updateHash(route, headingId, replaceHistory);
     _hashChanging = false;
-    if (map)
-        document.title = "TN HMIS Wiki - " + map.title;
+    if (page)
+        document.title = "TN HMIS Wiki - " + page.title;
     if (replaceHistory) {
-        renderPage(map, headingId);
+        renderPage(page, headingId);
     }
 }
 
@@ -106,13 +105,13 @@ function updatePageFromHash() {
     var { route, headingId } = getNavInfoFromHash();
     setActiveNavItem(route);
     if (!_hashChanging) {
-        const map = getMapEntryByRoute(route);
-        renderPage(map, headingId);
+        const page = getPageByRoute(route);
+        renderPage(page, headingId);
     }
 }
 
 export async function initNavigation() {
-    await renderDocsMap();
+    await renderDocsMap(_pageListEl);
     window.addEventListener("hashchange", updatePageFromHash);
 
     var { route, headingId } = getNavInfoFromHash();

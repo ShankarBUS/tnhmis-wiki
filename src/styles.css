@@ -120,49 +120,103 @@ html.nav-open .navbar {
 }
 
 .navitem {
-    display: block;
-    width: 100%;
-    text-align: left;
-    border: none;
-    background: transparent;
-    border-radius: var(--radius-sm);
-    padding: var(--space-1) var(--space-2);
-    cursor: pointer;
+    .navitem-header {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-1);
+        align-content: center;
+        align-items: center;
+        width: 100%;
+        border: none;
+        background: transparent;
+        border-radius: var(--radius-sm);
 
-    &:hover {
-        background: var(--c-surface-alt);
+        &:hover {
+            background: var(--c-surface-alt);
+        }
+
+        a {
+            width: 100%;
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+
+        &.expandable.level-1>a {
+            padding-left: 1rem;
+        }
+
+        &.expandable.level-2>a {
+            padding-left: 2rem;
+        }
+
+        &.expandable.level-3>a {
+            padding-left: 3rem;
+        }
+
+        &.expandable.level-4>a {
+            padding-left: 4rem;
+        }
+
+        &.level-1>a {
+            padding-left: 2rem;
+        }
+
+        &.level-2>a {
+            padding-left: 3rem;
+        }
+
+        &.level-3>a {
+            padding-left: 4rem;
+        }
+
+        &.level-4>a {
+            padding-left: 5rem;
+        }
     }
 
-    &.active {
+    &.active>.navitem-header {
         color: var(--c-accent);
         background: var(--c-accent-soft);
     }
 
-    &.level-1 {
-        padding-left: 1rem;
+    .navitem-expander {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+        transform: rotate(0deg);
+        color: inherit;
+        margin-left: var(--space-1);
 
-        &:before {
-            content: "->";
-            margin-right: 0.5rem;
+        &::before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            background: currentColor;
+            mask: url("https://shankarbus.github.io/kaadu-ui/assets/chevron-down-16.svg");
+            position: absolute;
+            right: 0;
+            align-self: center;
         }
     }
 
-    &.level-2 {
-        padding-left: 2rem;
-
-        &:before {
-            content: "->";
-            margin-right: 0.5rem;
-        }
+    .navitem-container {
+        display: none;
+        flex-direction: column;
+        gap: var(--space-1);
     }
 
-    &.level-3 {
-        padding-left: 3rem;
+    &.expanded>.navitem-header>.navitem-expander {
+        transform: rotate(-180deg);
+    }
 
-        &:before {
-            content: "->";
-            margin-right: 0.5rem;
-        }
+    &.expanded>.navitem-container {
+        display: flex;
     }
 }
 
