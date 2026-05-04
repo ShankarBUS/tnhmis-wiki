@@ -52,5 +52,13 @@
                 "description": "Breakdown of Single Page Discharge page"
             }
         ]
+    },
+    {
+        "title": "Investigations",
+        "path": "docs/investigations.md",
+        "route": "investigations",
+        "children": [
+            
+        ]
     }
 ]
