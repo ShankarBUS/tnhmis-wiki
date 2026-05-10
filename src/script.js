@@ -1,7 +1,7 @@
-import { initNavigation, navigateTo } from './js/navigation.js';
 import { enableStickyHeader } from 'https://shankarbus.github.io/kaadu-ui/kaadu-ui.js';
+import { initNoolagam, navigateTo } from 'https://shankarbus.github.io/kaadu-ui/noolagam.js';
 
-initNavigation();
+initNoolagam({ docsMapUrl: 'data/docs-map.json' });
 enableStickyHeader(70);
 
 homeButton.addEventListener('click', () => navigateTo(''));
